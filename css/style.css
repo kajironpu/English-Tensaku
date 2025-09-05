@@ -1,47 +1,47 @@
-/* --- 全体 --- */
+/* 全体 */
 body {
   font-family: Arial, sans-serif;
-  background: #f0f0f0;
-  padding: 20px;
+  padding: 10px;
   margin: 0;
+  background: #f0f0f0;
+  box-sizing: border-box;
+  font-size: 16px; /* 基本文字サイズを大きめに */
 }
 
+/* 見出し */
 h2 {
   text-align: center;
   margin-bottom: 20px;
-  color: #333;
+  font-size: 2rem;
 }
 
 h3 {
-  margin-top: 20px;
-  color: #444;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
 }
 
-/* --- テキストエリア --- */
+/* テキストエリア */
 textarea {
   width: 100%;
   padding: 12px;
-  font-size: 14px;
+  font-size: 1rem;
+  margin-bottom: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  resize: vertical;
+  box-sizing: border-box;
 }
 
-/* --- ボタン --- */
+/* ボタン */
 button {
-  padding: 10px 20px;
-  font-size: 14px;
-  margin: 5px 5px 5px 0;
+  padding: 12px 20px;
+  font-size: 1rem;
+  margin: 5px 2px;
+  cursor: pointer;
   border-radius: 5px;
   border: none;
   background: #51cf66;
   color: white;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-button:hover:not(:disabled) {
-  background: #40b755;
+  flex: 1;
 }
 
 button:disabled {
@@ -49,60 +49,55 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* --- ボタングループ --- */
+/* ボタングループを横並びで幅調整 */
 .button-group {
-  margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 5px;
+  margin-top: 10px;
 }
 
-/* --- 結果表示 --- */
+/* 結果表示 */
 .result {
   background: #e3f2fd;
   padding: 15px;
   border-radius: 8px;
   margin-top: 15px;
-  white-space: pre-wrap;
   display: block;
+  white-space: pre-wrap;
+  font-size: 1rem;
 }
 
-.result p {
-  margin: 8px 0;
-}
-
-.result span {
-  font-weight: bold;
-}
-
-/* --- 音声入力ボタン --- */
-#voiceInputBtn {
-  background: #ffa94d;
-}
-
-#voiceInputBtn:hover:not(:disabled) {
-  background: #ff922b;
-}
-
-#readBtn {
-  background: #339af0;
-}
-
-#readBtn:hover:not(:disabled) {
-  background: #228be6;
-}
-
-/* --- 問題表示 --- */
-#problem {
+/* ハイライト */
+.highlight {
   background: #fff3cd;
-  padding: 12px;
+  padding: 5px;
   border-radius: 5px;
-  border: 1px solid #ffe066;
+  display: inline-block;
+  margin-bottom: 5px;
 }
 
-/* --- モバイル対応 --- */
+/* レスポンシブ調整 */
 @media (max-width: 600px) {
+  body {
+    padding: 8px;
+    font-size: 15px;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
   button {
-    flex: 1 1 100%;
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  .button-group {
+    flex-direction: column;
   }
 }
