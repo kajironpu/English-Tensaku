@@ -1,46 +1,57 @@
-/* 全体 */
 body {
   font-family: Arial, sans-serif;
-  padding: 10px;
   margin: 0;
+  padding: 10px;
   background: #f0f0f0;
+  font-size: 16px;
   box-sizing: border-box;
-  font-size: 16px; /* 基本文字サイズを大きめに */
 }
 
 /* 見出し */
 h2 {
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 2rem;
+  margin-bottom: 15px;
+  font-size: 1.8rem;
 }
 
-h3 {
-  font-size: 1.3rem;
+/* 問題と入力欄を横並び */
+.problem-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 10px;
+}
+
+#problem {
+  flex: 1;
+  font-weight: bold;
+  background: #fff3cd;
+  padding: 8px;
+  border-radius: 5px;
 }
 
 /* テキストエリア */
 textarea {
-  width: 100%;
-  padding: 12px;
+  flex: 1;
+  padding: 10px;
   font-size: 1rem;
-  margin-bottom: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  box-sizing: border-box;
+  resize: vertical;
+  min-height: 40px;
 }
 
 /* ボタン */
 button {
-  padding: 12px 20px;
+  padding: 10px 15px;
   font-size: 1rem;
-  margin: 5px 2px;
-  cursor: pointer;
+  margin: 3px 0;
   border-radius: 5px;
   border: none;
   background: #51cf66;
   color: white;
+  cursor: pointer;
   flex: 1;
 }
 
@@ -49,54 +60,37 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* ボタングループを横並びで幅調整 */
+/* ボタングループ */
 .button-group {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
-/* 結果表示 */
+/* 結果表示を上に寄せてコンパクト */
 .result {
   background: #e3f2fd;
-  padding: 15px;
+  padding: 10px;
   border-radius: 8px;
-  margin-top: 15px;
+  margin-top: 10px;
   display: block;
   white-space: pre-wrap;
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
-/* ハイライト */
-.highlight {
-  background: #fff3cd;
-  padding: 5px;
-  border-radius: 5px;
-  display: inline-block;
-  margin-bottom: 5px;
-}
-
-/* レスポンシブ調整 */
+/* レスポンシブ */
 @media (max-width: 600px) {
-  body {
-    padding: 8px;
-    font-size: 15px;
-  }
-
   h2 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
-
-  h3 {
-    font-size: 1.2rem;
+  textarea {
+    min-height: 60px;
   }
-
-  button {
-    padding: 10px;
-    font-size: 0.95rem;
+  .problem-row {
+    flex-direction: column;
+    align-items: stretch;
   }
-
   .button-group {
     flex-direction: column;
   }
