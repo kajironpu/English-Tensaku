@@ -1,37 +1,47 @@
+/* --- 全体 --- */
 body {
   font-family: Arial, sans-serif;
-  padding: 20px;
   background: #f0f0f0;
+  padding: 20px;
+  margin: 0;
 }
 
 h2 {
   text-align: center;
   margin-bottom: 20px;
+  color: #333;
 }
 
+h3 {
+  margin-top: 20px;
+  color: #444;
+}
+
+/* --- テキストエリア --- */
 textarea {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   font-size: 14px;
-  margin-bottom: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  resize: vertical;
 }
 
+/* --- ボタン --- */
 button {
   padding: 10px 20px;
   font-size: 14px;
-  margin: 5px;
-  cursor: pointer;
+  margin: 5px 5px 5px 0;
   border-radius: 5px;
   border: none;
   background: #51cf66;
   color: white;
-  transition: background 0.3s;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 button:hover:not(:disabled) {
-  background: #40c057;
+  background: #40b755;
 }
 
 button:disabled {
@@ -39,23 +49,60 @@ button:disabled {
   cursor: not-allowed;
 }
 
+/* --- ボタングループ --- */
+.button-group {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* --- 結果表示 --- */
 .result {
   background: #e3f2fd;
   padding: 15px;
   border-radius: 8px;
   margin-top: 15px;
-  display: block;
   white-space: pre-wrap;
+  display: block;
 }
 
-.button-group {
-  margin-top: 10px;
+.result p {
+  margin: 8px 0;
 }
 
-.highlight {
+.result span {
+  font-weight: bold;
+}
+
+/* --- 音声入力ボタン --- */
+#voiceInputBtn {
+  background: #ffa94d;
+}
+
+#voiceInputBtn:hover:not(:disabled) {
+  background: #ff922b;
+}
+
+#readBtn {
+  background: #339af0;
+}
+
+#readBtn:hover:not(:disabled) {
+  background: #228be6;
+}
+
+/* --- 問題表示 --- */
+#problem {
   background: #fff3cd;
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid #ffe066;
 }
 
-p {
-  margin-bottom: 10px;
+/* --- モバイル対応 --- */
+@media (max-width: 600px) {
+  button {
+    flex: 1 1 100%;
+  }
 }
