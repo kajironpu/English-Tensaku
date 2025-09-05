@@ -1,18 +1,29 @@
+// --- 問題リストを格納 ---
 let problems = [];
 let currentProblem = "";
 
-// CSV読み込み
+// --- CSVを読み込み ---
 async function loadProblems() {
-  const response = await fetch("/problems.csv");
-  const text = await response.text();
-  const lines = text.trim().split("\n").slice(1); // ヘッダー除去
-  problems = lines.map(line => line.trim()).filter(line => line);
+  try {
+    const response = await fetch("problems.csv"); // ファイル名を合わせる！
+    if (!response.ok) throw new Error("CSVファイルを読み込めませんでした");
+
+    const text = await response.text();
+    // 1行ごとに分割して配列に
+    problems = text.split("\n").map(line => line.trim()).filter(line => line);
+    
+    // 最初の問題を表示
+    showProblem();
+  } catch (err) {
+    console.error("問題読み込みエラー:", err);
+    document.getElementById("problem").textContent = "問題を読み込めませんでした。";
+  }
 }
 
-// 問題を表示
+// --- 問題表示 ---
 function showProblem() {
   if (problems.length === 0) {
-    document.getElementById("problem").textContent = "問題が読み込めませんでした。";
+    document.getElementById("problem").textContent = "問題がありません。";
     return;
   }
   const idx = Math.floor(Math.random() * problems.length);
@@ -22,8 +33,72 @@ function showProblem() {
   clearResult();
 }
 
-// ページ読み込み時に実行
-document.addEventListener("DOMContentLoaded", async () => {
-  await loadProblems();
-  showProblem();
-});
+// --- 結果クリア ---
+function clearResult() {
+  document.getElementById("corrected").textContent = "";
+  document.getElementById("score").textContent = "";
+  document.getElementById("advice").textContent = "";
+}
+
+// --- 添削処理 ---
+async function checkAnswer() {
+  const userText = document.getElementById("userAnswer").value.trim();
+  if (!userText) {
+    alert("英文を入力してください");
+    return;
+  }
+
+  try {
+    const checkBtn = document.getElementById("checkBtn");
+    checkBtn.disabled = true;
+    checkBtn.textContent = "添削中...";
+
+    const response = await fetch("/api/check", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userText, currentProblem })
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error(errText);
+    }
+
+    const data = await response.json();
+    const resultText = data.result || data.choices?.[0]?.message?.content || "";
+
+    // --- 正規表現で抽出 ---
+    const correctedMatch = resultText.match(/添削後[:：]\s*(.*)/i);
+    const scoreMatch = resultText.match(/スコア[:：]\s*(\d+)/i);
+    const adviceMatch = resultText.match(/アドバイス[:：]\s*([\s\S]*)/i);
+
+    const corrected = correctedMatch ? correctedMatch[1].trim() : "";
+    const score = scoreMatch ? scoreMatch[1].trim() : "";
+    const advice = adviceMatch ? adviceMatch[1].trim() : "";
+
+    document.getElementById("corrected").textContent = corrected;
+    document.getElementById("score").textContent = score ? score + " / 100" : "";
+    document.getElementById("advice").textContent = advice;
+
+    // --- 自動読み上げ ---
+    if (corrected) {
+      const utter = new SpeechSynthesisUtterance(corrected);
+      utter.lang = "en-US";
+      speechSynthesis.speak(utter);
+    }
+
+  } catch (e) {
+    alert("添削エラー: " + e.message);
+  } finally {
+    const checkBtn = document.getElementById("checkBtn");
+    checkBtn.disabled = false;
+    checkBtn.textContent = "添削する";
+  }
+}
+
+// --- イベント設定 ---
+document.getElementById("checkBtn").addEventListener("click", checkAnswer);
+document.getElementById("nextBtn").addEventListener("click", showProblem);
+
+// --- 初期化 ---
+document.addEventListener("DOMContentLoaded", loadProblems);
