@@ -1,54 +1,55 @@
-/* --- 基本スタイル --- */
+/* --- 全体設定 --- */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 10px;
   background: #f0f0f0;
   font-size: 16px;
+  line-height: 1.4;
   box-sizing: border-box;
 }
 
 h2 {
   text-align: center;
-  margin-bottom: 15px;
-  font-size: 1.8rem;
+  margin-bottom: 12px;
+  font-size: 1.6rem;
 }
 
-/* --- 添削結果カードを固定 --- */
+/* --- 添削結果カード --- */
 .result-card {
   position: sticky;
   top: 10px;
   background: #e3f2fd;
-  padding: 12px;
+  padding: 10px;
   border-radius: 8px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  font-size: 0.95rem;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-size: 0.9rem;
   z-index: 10;
 }
 
-/* 問題と入力欄横並び */
+/* --- 問題と入力欄 --- */
 .problem-row {
   display: flex;
   flex-wrap: wrap;
+  gap: 8px;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 #problem {
   flex: 1;
   font-weight: bold;
   background: #fff3cd;
-  padding: 8px;
+  padding: 6px 8px;
   border-radius: 5px;
-  min-width: 120px;
+  min-width: 100px;
+  font-size: 0.95rem;
 }
 
-/* テキストエリア */
 textarea {
   flex: 1;
-  padding: 10px;
+  padding: 8px;
   font-size: 1rem;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -56,17 +57,18 @@ textarea {
   min-height: 40px;
 }
 
-/* ボタン */
+/* --- ボタン --- */
 button {
-  padding: 10px 15px;
-  font-size: 1rem;
-  margin: 3px 0;
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  margin: 2px 0;
   border-radius: 5px;
   border: none;
   background: #51cf66;
   color: white;
   cursor: pointer;
   flex: 1;
+  text-align: center;
 }
 
 button:disabled {
@@ -74,7 +76,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* ボタングループ */
+/* --- ボタングループ --- */
 .button-group {
   display: flex;
   flex-wrap: wrap;
@@ -82,19 +84,23 @@ button:disabled {
   margin-top: 5px;
 }
 
-/* レスポンシブ */
+/* --- スマホ対応 --- */
 @media (max-width: 600px) {
   h2 {
-    font-size: 1.5rem;
-  }
-  textarea {
-    min-height: 60px;
+    font-size: 1.4rem;
   }
   .problem-row {
     flex-direction: column;
     align-items: stretch;
   }
+  textarea {
+    min-height: 60px;
+  }
   .button-group {
     flex-direction: column;
+  }
+  .result-card {
+    font-size: 0.88rem;
+    padding: 8px;
   }
 }
