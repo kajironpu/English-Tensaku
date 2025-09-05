@@ -7,7 +7,6 @@ async function loadProblems() {
   try {
     const response = await fetch("problems.csv");
     if (!response.ok) throw new Error("CSVファイルを読み込めませんでした");
-
     const text = await response.text();
     problems = text.split("\n").map(line => line.trim()).filter(line => line);
     showProblem();
@@ -41,18 +40,18 @@ function clearResult() {
 function setupVoiceInput() {
   const voiceBtn = document.getElementById("voiceInputBtn");
   if (!voiceBtn) return;
-
+  
   voiceBtn.addEventListener("click", () => {
     if (!("webkitSpeechRecognition" in window)) {
       alert("音声入力はこのブラウザでサポートされていません (Chrome推奨)");
       return;
     }
-
+    
     const recognition = new webkitSpeechRecognition();
     recognition.lang = "en-US";
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
-
+    
     recognition.onresult = (event) => {
       let transcript = event.results[0][0].transcript.trim();
       if (transcript.length > 0) {
@@ -61,11 +60,11 @@ function setupVoiceInput() {
       }
       document.getElementById("userAnswer").value = transcript;
     };
-
+    
     recognition.onerror = (event) => {
       alert("音声入力エラー: " + event.error);
     };
-
+    
     recognition.start();
   });
 }
@@ -77,46 +76,47 @@ async function checkAnswer() {
     alert("英文を入力してください");
     return;
   }
-
+  
   const checkBtn = document.getElementById("checkBtn");
   checkBtn.disabled = true;
   checkBtn.textContent = "添削中...";
-
+  
   try {
     const response = await fetch("/api/check", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userText, currentProblem })
     });
-
+    
     if (!response.ok) {
       const errText = await response.text();
       throw new Error(errText);
     }
-
+    
     const data = await response.json();
-    const resultText = data.choices?.[0]?.message?.content || "";
-
+    // 修正: APIレスポンス構造に合わせる
+    const resultText = data.result || "";
+    
     // --- 正規表現で抽出 ---
     const correctedMatch = resultText.match(/添削後[:：]\s*(.*)/i);
     const scoreMatch = resultText.match(/スコア[:：]\s*(\d+)/i);
     const adviceMatch = resultText.match(/アドバイス[:：]\s*([\s\S]*)/i);
-
+    
     const corrected = correctedMatch ? correctedMatch[1].trim() : "";
     const score = scoreMatch ? scoreMatch[1].trim() : "";
     const advice = adviceMatch ? adviceMatch[1].trim() : "";
-
+    
     document.getElementById("corrected").textContent = corrected;
     document.getElementById("score").textContent = score ? score + " / 100" : "";
     document.getElementById("advice").textContent = advice;
-
+    
     // --- 自動読み上げ ---
     if (corrected) {
       const utter = new SpeechSynthesisUtterance(corrected);
       utter.lang = "en-US";
       speechSynthesis.speak(utter);
     }
-
+    
   } catch (e) {
     alert("添削エラー: " + e.message);
   } finally {
