@@ -1,18 +1,15 @@
-// --- 問題リストを格納 ---
+// --- 問題リスト ---
 let problems = [];
 let currentProblem = "";
 
 // --- CSVを読み込み ---
 async function loadProblems() {
   try {
-    const response = await fetch("problems.csv"); // ファイル名を合わせる！
+    const response = await fetch("problems.csv");
     if (!response.ok) throw new Error("CSVファイルを読み込めませんでした");
 
     const text = await response.text();
-    // 1行ごとに分割して配列に
     problems = text.split("\n").map(line => line.trim()).filter(line => line);
-    
-    // 最初の問題を表示
     showProblem();
   } catch (err) {
     console.error("問題読み込みエラー:", err);
@@ -38,6 +35,34 @@ function clearResult() {
   document.getElementById("corrected").textContent = "";
   document.getElementById("score").textContent = "";
   document.getElementById("advice").textContent = "";
+}
+
+// --- 音声入力 ---
+function setupVoiceInput() {
+  const voiceBtn = document.getElementById("voiceInputBtn");
+  if (!voiceBtn) return;
+
+  voiceBtn.addEventListener("click", () => {
+    if (!("webkitSpeechRecognition" in window)) {
+      alert("音声入力はこのブラウザでサポートされていません (Chrome推奨)");
+      return;
+    }
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onresult = (event) => {
+      document.getElementById("userAnswer").value = event.results[0][0].transcript;
+    };
+
+    recognition.onerror = (event) => {
+      alert("音声入力エラー: " + event.error);
+    };
+
+    recognition.start();
+  });
 }
 
 // --- 添削処理 ---
@@ -101,4 +126,7 @@ document.getElementById("checkBtn").addEventListener("click", checkAnswer);
 document.getElementById("nextBtn").addEventListener("click", showProblem);
 
 // --- 初期化 ---
-document.addEventListener("DOMContentLoaded", loadProblems);
+document.addEventListener("DOMContentLoaded", () => {
+  loadProblems();
+  setupVoiceInput(); // 音声入力の初期化
+});
