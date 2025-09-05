@@ -35,7 +35,11 @@ export default async function handler(req, res) {
     }
 
     const data = await response.json();
-    res.status(200).json(data);
+
+    // --- ここで result を抽出 ---
+    const result = data.choices?.[0]?.message?.content?.trim() || "";
+
+    res.status(200).json({ result });
 
   } catch (err) {
     res.status(500).json({ error: err.message });
