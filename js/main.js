@@ -54,7 +54,12 @@ function setupVoiceInput() {
     recognition.maxAlternatives = 1;
 
     recognition.onresult = (event) => {
-      document.getElementById("userAnswer").value = event.results[0][0].transcript;
+      let transcript = event.results[0][0].transcript.trim();
+      if (transcript.length > 0) {
+        // 先頭文字を自動で大文字化
+        transcript = transcript.charAt(0).toUpperCase() + transcript.slice(1);
+      }
+      document.getElementById("userAnswer").value = transcript;
     };
 
     recognition.onerror = (event) => {
@@ -73,11 +78,11 @@ async function checkAnswer() {
     return;
   }
 
-  try {
-    const checkBtn = document.getElementById("checkBtn");
-    checkBtn.disabled = true;
-    checkBtn.textContent = "添削中...";
+  const checkBtn = document.getElementById("checkBtn");
+  checkBtn.disabled = true;
+  checkBtn.textContent = "添削中...";
 
+  try {
     const response = await fetch("/api/check", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -90,7 +95,7 @@ async function checkAnswer() {
     }
 
     const data = await response.json();
-    const resultText = data.result || data.choices?.[0]?.message?.content || "";
+    const resultText = data.choices?.[0]?.message?.content || "";
 
     // --- 正規表現で抽出 ---
     const correctedMatch = resultText.match(/添削後[:：]\s*(.*)/i);
@@ -115,18 +120,17 @@ async function checkAnswer() {
   } catch (e) {
     alert("添削エラー: " + e.message);
   } finally {
-    const checkBtn = document.getElementById("checkBtn");
     checkBtn.disabled = false;
     checkBtn.textContent = "添削する";
   }
 }
 
-// --- イベント設定 ---
+// --- ボタンイベント ---
 document.getElementById("checkBtn").addEventListener("click", checkAnswer);
 document.getElementById("nextBtn").addEventListener("click", showProblem);
 
 // --- 初期化 ---
 document.addEventListener("DOMContentLoaded", () => {
   loadProblems();
-  setupVoiceInput(); // 音声入力の初期化
+  setupVoiceInput();
 });
