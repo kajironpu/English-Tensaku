@@ -34,6 +34,7 @@ document.getElementById("voiceInputBtn").addEventListener("click", () => {
   recognition.lang = "en-US";
   recognition.interimResults = false;
   recognition.maxAlternatives = 1;
+  recognition.continuous = false; // 1フレーズごとに終了
 
   recognition.onresult = function (event) {
     document.getElementById("userAnswer").value =
