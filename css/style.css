@@ -1,3 +1,4 @@
+/* --- 基本スタイル --- */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -7,14 +8,26 @@ body {
   box-sizing: border-box;
 }
 
-/* 見出し */
 h2 {
   text-align: center;
   margin-bottom: 15px;
   font-size: 1.8rem;
 }
 
-/* 問題と入力欄を横並び */
+/* --- 添削結果カードを固定 --- */
+.result-card {
+  position: sticky;
+  top: 10px;
+  background: #e3f2fd;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-size: 0.95rem;
+  z-index: 10;
+}
+
+/* 問題と入力欄横並び */
 .problem-row {
   display: flex;
   flex-wrap: wrap;
@@ -29,6 +42,7 @@ h2 {
   background: #fff3cd;
   padding: 8px;
   border-radius: 5px;
+  min-width: 120px;
 }
 
 /* テキストエリア */
@@ -66,17 +80,6 @@ button:disabled {
   flex-wrap: wrap;
   gap: 5px;
   margin-top: 5px;
-}
-
-/* 結果表示を上に寄せてコンパクト */
-.result {
-  background: #e3f2fd;
-  padding: 10px;
-  border-radius: 8px;
-  margin-top: 10px;
-  display: block;
-  white-space: pre-wrap;
-  font-size: 0.95rem;
 }
 
 /* レスポンシブ */
